@@ -1,0 +1,19 @@
+@import './variables.scss';
+@import './Home.module.scss';
+@import './Film.module.scss';
+
+body {
+  overflow-x: hidden;
+}
+
+:where(.css-dev-only-do-not-override-1kuana8).ant-menu-dark .ant-menu-item-selected {
+  background-color: $primary-color !important;
+}
+
+:where(.css-dev-only-do-not-override-1kuana8).ant-btn-primary {
+  background: $primary-color !important;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}

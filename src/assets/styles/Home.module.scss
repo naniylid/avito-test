@@ -1,0 +1,19 @@
+@import './variables.scss';
+@import './Filter.module.scss';
+
+.root {
+  padding: 0;
+}
+
+:global {
+  .ant-pagination-item-active {
+    border-color: $primary-color !important;
+    a {
+      color: $primary-color !important;
+    }
+  }
+
+  .ant-dropdown-trigger {
+    color: $primary-color !important;
+  }
+}

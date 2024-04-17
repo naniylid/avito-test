@@ -15,17 +15,19 @@ export const apiKey = 'RZZDNZ1-MHH460D-M3651KJ-QSMX0VZ';
 export const fetchMovies = createAsyncThunk<Movies[], SearchParams>(
   'movie/fetchMoviesStatus',
   async (params) => {
-    const { sortBy, search, page } = params;
+    const { sortType, sortField, search, page, notNullFields } = params;
 
-    const url = 'https://api.kinopoisk.dev/v1.4/movie';
+    const url = 'https://api.kinopoisk.dev/v1.4/movie?year=2000-2031';
 
     const response = await axios.get<MovieResponse>(url, {
       params: pickBy(
         {
           page: page,
-          limit: 12, // Пример: ограничение на количество фильмов на странице
-          sortBy,
+          limit: 15,
+          sortType,
+          sortField,
           search,
+          notNullFields,
         },
         identity,
       ),

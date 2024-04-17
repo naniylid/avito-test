@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../core/redux/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Divider, Row, Col } from 'antd';
 import qs from 'qs';
 import '../assets/styles/Home.module.scss';
@@ -25,23 +25,27 @@ const Home: React.FC = () => {
   const { sort, page, searchValue } = useSelector(selectFilterSlice);
   const { items, status } = useSelector(selectApiSlice);
 
-  const sortType = sort.sortProperty;
+  const sortBy = sort.sortProperty;
 
   const onChangePage = (value: number) => {
     dispatch(setPage(value));
   };
 
   const getMovies = async () => {
-    const sortBy = sortType.replace('-', '');
-    const order = sortType.includes('-') ? '↓' : '↑';
+    const sortType = sortBy.includes('-') ? -1 : 1;
+    const sortField = sortBy.replace('-', '');
+    //sortBy.includes('-') ? '↓' : '↑';
+    const notNullFields = sortField;
     const search = searchValue;
 
     dispatch(
       //Бизнес логика получения пицц
       fetchMovies({
         page: String(page),
-        sortBy,
+        sortType,
         search,
+        sortField,
+        notNullFields,
       }),
     );
     window.scrollTo(0, 0);
@@ -74,7 +78,7 @@ const Home: React.FC = () => {
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
-  }, [sortType, searchValue, page]);
+  }, [sortBy, searchValue, page]);
 
   // //Если был первый рендер, то запрашиваем пиццы
   React.useEffect(() => {
@@ -83,7 +87,7 @@ const Home: React.FC = () => {
       getMovies();
     }
     isSearch.current = false;
-  }, [sortType, searchValue, page]);
+  }, [sortBy, searchValue, page]);
 
   const movies = items.map((obj) => (
     <Link to={`/movie/${obj.id}`}>

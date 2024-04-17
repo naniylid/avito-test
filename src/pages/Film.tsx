@@ -5,6 +5,7 @@ import axios from 'axios';
 import styles from '../assets/styles/Film.module.scss';
 import { Reviews, RecommendedMovies } from '../components';
 import { Movies } from '../@types/types';
+import defaultposter from '../assets/image/default.svg';
 
 import { apiKey } from '../core/redux/slices/apiSlice';
 
@@ -62,14 +63,18 @@ const Film: React.FC = () => {
     <>
       <div className={styles.root}>
         <div className={styles.aboutMovie}>
-          <Image src={item.poster.url} />
+          <Image src={item.poster.url ? item.poster.url : defaultposter} />
 
           <Descriptions title={item.name}>
             <Descriptions.Item label='Страна'>{formatCountries(item.countries)}</Descriptions.Item>
             <Descriptions.Item label='Актеры'>{actorNames}</Descriptions.Item>
 
-            <Descriptions.Item label='Возраст'>{item.ageRating}+</Descriptions.Item>
-            <Descriptions.Item label='Описание'>{item.description}</Descriptions.Item>
+            <Descriptions.Item label='Возраст'>
+              {item.ageRating ? item.ageRating : 'Нет'}
+            </Descriptions.Item>
+            <Descriptions.Item label='Описание'>
+              {item.description ? item.description : 'Нет описания'}
+            </Descriptions.Item>
           </Descriptions>
         </div>
 

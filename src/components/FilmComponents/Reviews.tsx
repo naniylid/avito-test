@@ -49,28 +49,32 @@ const Reviews: React.FC<ReviewsProps> = ({ movieId }) => {
 
   return (
     <div>
-      <List
-        itemLayout='horizontal'
-        dataSource={currentReviews}
-        renderItem={(item) => (
-          <List.Item>
-            <List.Item.Meta title={item.title} description={item.author} />
-            {item.review}
-          </List.Item>
-        )}
-      />
-
-      {/* Пагинация */}
-      <div className='pagination'>
-        <ReactPaginate
-          pageCount={pageCount}
-          nextLabel='>'
-          previousLabel='<'
-          onPageChange={(selectedItem) => handlePageChange(selectedItem.selected + 1)}
-          containerClassName={'pagination'}
-          activeClassName={'active'}
-        />
-      </div>
+      {reviews.length > 0 ? (
+        <>
+          <List
+            itemLayout='horizontal'
+            dataSource={currentReviews}
+            renderItem={(item) => (
+              <List.Item>
+                <List.Item.Meta title={item.title} description={item.author} />
+                {item.review}
+              </List.Item>
+            )}
+          />
+          <div className='pagination'>
+            <ReactPaginate
+              pageCount={pageCount}
+              nextLabel='>'
+              previousLabel='<'
+              onPageChange={(selectedItem) => handlePageChange(selectedItem.selected + 1)}
+              containerClassName={'pagination'}
+              activeClassName={'active'}
+            />
+          </div>
+        </>
+      ) : (
+        <p>Пока нет отзывов</p>
+      )}
     </div>
   );
 };

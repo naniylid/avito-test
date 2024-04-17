@@ -15,7 +15,7 @@ const CustomPagination: React.FC<PaginationProps> = ({ page, onChangePage }) => 
         nextLabel='>'
         onPageChange={(event) => onChangePage(event.selected + 1)}
         pageRangeDisplayed={4}
-        pageCount={3}
+        pageCount={50}
         forcePage={page - 1}
         previousLabel='<'
       />

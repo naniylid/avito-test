@@ -2,8 +2,9 @@ export type Movies = {
   id: number;
   movieId: number;
   name: string;
+  alternativeName?: string;
   year?: number;
-  genres: {
+  genres?: {
     name: string;
   }[];
   countries: {
@@ -48,9 +49,11 @@ export enum Status {
 }
 
 export type SearchParams = {
-  sortBy: string;
+  sortType: string;
   search: string;
   page: string;
+  sortField: string;
+  notNullFields: string;
 };
 
 export interface FetchSliceState {
@@ -61,14 +64,14 @@ export interface FetchSliceState {
 export enum SortPropertyEnum {
   YEAR_DESC = 'year',
   YEAR_ASC = '-year',
-  COUNTRY_DESC = 'countries',
-  COUNTRY_ASC = '-countries',
+  COUNTRY_DESC = 'countries.name',
+  COUNTRY_ASC = '-countries.name',
   AGE_DESC = 'ageRating',
   AGE_ASC = '-ageRating',
 }
 
 export type SortType = {
-  name: string;
+  name: number;
   sortProperty: SortPropertyEnum;
 };
 

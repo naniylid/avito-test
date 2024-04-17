@@ -2,8 +2,17 @@ import React from 'react';
 import { Col, Card } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import { Movies } from '../../@types/types';
+import defaultposter from '../../assets/image/default.svg';
 
-const CardItem: React.FC<Movies> = ({ id, year, name, genres, poster, ageRating, countries }) => {
+const CardItem: React.FC<Movies> = ({
+  year,
+  name,
+  alternativeName,
+  genres,
+  poster,
+  ageRating,
+  countries,
+}) => {
   const formatCountries = (countries: { name: string }[]): string => {
     return countries.map((country) => country.name).join(', ');
   };
@@ -20,14 +29,23 @@ const CardItem: React.FC<Movies> = ({ id, year, name, genres, poster, ageRating,
 
   return (
     <Col className='gutter-row' span={6}>
-      <Card hoverable style={{ width: 240 }} cover={<img alt='film' src={poster.url} />}>
-        <Meta title={name} description='' />
+      <Card
+        hoverable
+        style={{ width: 240 }}
+        cover={
+          <img
+            alt='film'
+            src={poster && poster.url && poster.url !== 'null' ? poster.url : defaultposter}
+          />
+        }
+      >
+        <Meta title={name ? name : alternativeName} description='' />
         <div>
           <p>
-            {formatCountries(countries)} • {getFirstTwoGenres(genres)}
+            {formatCountries(countries)} • {genres ? getFirstTwoGenres(genres) : ''}
           </p>
           <p>Год: {year}</p>
-          <p>Возрастной рейтинг: {ageRating}+</p>
+          <p>Возрастной рейтинг: {ageRating ? ageRating : 'Нет'}</p>
         </div>
       </Card>
     </Col>

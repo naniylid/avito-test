@@ -6,9 +6,10 @@ const initialState: FilterSliceState = {
   searchValue: '',
   page: 1,
   sort: {
-    name: 'Год',
+    name: 'Год ↑',
     sortProperty: SortPropertyEnum.YEAR_DESC,
   },
+  limit: 15,
 };
 
 const filterSlice = createSlice({
@@ -25,6 +26,9 @@ const filterSlice = createSlice({
     setPage(state, action: PayloadAction<number>) {
       state.page = action.payload;
     },
+    setLimit(state, action: PayloadAction<number>) {
+      state.limit = action.payload;
+    },
     setFilters(state, action: PayloadAction<FilterSliceState>) {
       if (Object.keys(action.payload).length) {
         state.page = Number(action.payload.page);
@@ -32,7 +36,7 @@ const filterSlice = createSlice({
       } else {
         state.page = 1;
         state.sort = {
-          name: 'Год',
+          name: 'Год ↑',
           sortProperty: SortPropertyEnum.YEAR_DESC,
         };
       }
@@ -40,7 +44,7 @@ const filterSlice = createSlice({
   },
 });
 
-export const { setSort, setPage, setFilters, setSearchValue } = filterSlice.actions;
+export const { setSort, setPage, setFilters, setSearchValue, setLimit } = filterSlice.actions;
 
 export const selectSort = (state: RootState) => state.filterSlice.sort;
 export const selectFilterSlice = (state: RootState) => state.filterSlice;

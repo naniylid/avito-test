@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../core/redux/store';
 import { useSelector } from 'react-redux';
-import { Divider, Row, Col } from 'antd';
+import { Divider, Row } from 'antd';
 import qs from 'qs';
 import '../assets/styles/Home.module.scss';
-import { SearchFilm, Filter, CustomPagination, Skeleton } from '../components';
+import { SearchFilm, Filter, CustomPagination, Skeleton, Limit } from '../components';
 
 import { sortList } from '../components/Filter';
 
@@ -22,7 +22,7 @@ const Home: React.FC = () => {
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
-  const { sort, page, searchValue } = useSelector(selectFilterSlice);
+  const { sort, page, searchValue, limit } = useSelector(selectFilterSlice);
   const { items, status } = useSelector(selectApiSlice);
 
   const sortBy = sort.sortProperty;
@@ -34,18 +34,18 @@ const Home: React.FC = () => {
   const getMovies = async () => {
     const sortType = sortBy.includes('-') ? -1 : 1;
     const sortField = sortBy.replace('-', '');
-    //sortBy.includes('-') ? '↓' : '↑';
     const notNullFields = sortField;
     const search = searchValue;
 
     dispatch(
-      //Бизнес логика получения пицц
+      //Бизнес логика получения фильмов
       fetchMovies({
         page: String(page),
         sortType,
         search,
         sortField,
         notNullFields,
+        limit: String(limit),
       }),
     );
     window.scrollTo(0, 0);
@@ -54,13 +54,14 @@ const Home: React.FC = () => {
   React.useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1)) as unknown as SearchParams;
-      const sort = sortList.find((obj) => obj.sortProperty === params.sortBy);
+      const sort = sortList.find((obj) => obj.sortProperty === params.sortField);
 
       dispatch(
         setFilters({
           searchValue: params.search,
           page: Number(params.page),
           sort: sort || sortList[0],
+          limit: Number(params.limit),
         }),
       );
       isSearch.current = true;
@@ -72,7 +73,6 @@ const Home: React.FC = () => {
     if (isMounted.current) {
       const queryString = qs.stringify({
         sortProperty: sort.sortProperty,
-
         page,
       });
       navigate(`?${queryString}`);
@@ -99,6 +99,9 @@ const Home: React.FC = () => {
   return (
     <div className='main-block'>
       <SearchFilm />
+      <div className='page-limit'>
+        <h4>Количество фильмов на странице</h4> <Limit />
+      </div>
       <Divider orientation='center'>
         Все фильмы и сериалы
         <div className='filter'>

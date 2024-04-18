@@ -5,3 +5,4 @@ export { default as CustomPagination } from './Pagination';
 export { default as RecommendedMovies } from './FilmComponents/RecommendedMovies';
 export { default as Reviews } from './FilmComponents/Reviews';
 export { default as SearchFilm } from './Search';
+export { default as Limit } from './Limit';

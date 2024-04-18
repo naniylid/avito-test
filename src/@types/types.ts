@@ -50,11 +50,12 @@ export enum Status {
 
 export type SearchParams = {
   sortType: number;
-  search: string;
+  // search: string;
   page: string;
   sortField: string;
   notNullFields: string;
   limit: string;
+  query: string;
 };
 
 export interface FetchSliceState {

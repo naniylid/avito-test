@@ -36,13 +36,14 @@ const Home: React.FC = () => {
     const sortField = sortBy.replace('-', '');
     const notNullFields = sortField;
     const search = searchValue;
+    const query = search;
 
     dispatch(
       //Бизнес логика получения фильмов
       fetchMovies({
         page: String(page),
         sortType,
-        search,
+        query,
         sortField,
         notNullFields,
         limit: String(limit),
@@ -58,7 +59,7 @@ const Home: React.FC = () => {
 
       dispatch(
         setFilters({
-          searchValue: params.search,
+          searchValue: params.query,
           page: Number(params.page),
           sort: sort || sortList[0],
           limit: Number(params.limit),

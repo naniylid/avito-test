@@ -15,9 +15,9 @@ export const apiKey = 'RZZDNZ1-MHH460D-M3651KJ-QSMX0VZ';
 export const fetchMovies = createAsyncThunk<Movies[], SearchParams>(
   'movie/fetchMoviesStatus',
   async (params) => {
-    const { sortType, sortField, search, page, notNullFields, limit } = params;
+    const { sortType, sortField, page, notNullFields, limit, query } = params;
 
-    const url = 'https://api.kinopoisk.dev/v1.4/movie?year=2010-2027';
+    const url = 'https://api.kinopoisk.dev/v1.4/movie/search?year=2010-2027';
 
     const response = await axios.get<MovieResponse>(url, {
       params: pickBy(
@@ -26,7 +26,7 @@ export const fetchMovies = createAsyncThunk<Movies[], SearchParams>(
           limit: limit,
           sortType,
           sortField,
-          search,
+          query,
           notNullFields,
         },
         identity,

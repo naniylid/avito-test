@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import '../variables.scss';
 
 .root {
   padding: 0;
@@ -45,5 +45,24 @@
         color: $primary-color !important;
       }
     }
+  }
+
+  .pagination {
+    margin: 20px 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      color: #000;
+    }
+  }
+}
+
+.active {
+  a {
+    color: $primary-color !important;
+    font-weight: bold !important;
   }
 }

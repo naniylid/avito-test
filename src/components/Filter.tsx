@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setSort } from '../core/redux/slices/filterSlice';
 import { SortType, SortPropertyEnum } from '../@types/types';
 
-import '../assets/styles/Filter.module.scss';
+import '../assets/styles/components/Filter.module.scss';
 
 type SortItem = {
   name: string;

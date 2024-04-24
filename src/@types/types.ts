@@ -3,7 +3,7 @@ export type Movies = {
   movieId: number;
   name: string;
   alternativeName?: string;
-  year?: number;
+  year: number;
   genres?: {
     name: string;
   }[];
@@ -50,12 +50,12 @@ export enum Status {
 
 export type SearchParams = {
   sortType: number;
-  // search: string;
-  page: string;
+  page: number;
   sortField: string;
   notNullFields: string;
-  limit: string;
+  limit: number;
   query: string;
+  search: string;
 };
 
 export interface FetchSliceState {

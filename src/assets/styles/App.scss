@@ -1,7 +1,7 @@
 @import './variables.scss';
-@import './Home.module.scss';
-@import './Film.module.scss';
-@import './RandomMovie.module.scss';
+@import './pages/Home.module.scss';
+@import './pages/Film.module.scss';
+@import './pages/RandomMovie.module.scss';
 
 body {
   overflow-x: hidden;
@@ -16,5 +16,23 @@ body {
 
   &:hover {
     opacity: 0.7;
+  }
+}
+
+.not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    span {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  p {
+    position: absolute;
+    margin-top: 150px;
   }
 }

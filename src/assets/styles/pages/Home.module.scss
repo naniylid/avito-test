@@ -1,5 +1,5 @@
-@import './variables.scss';
-@import './Filter.module.scss';
+@import '../variables.scss';
+@import '../components/Filter.module.scss';
 
 .root {
   padding: 0;
@@ -15,5 +15,11 @@
 
   .ant-dropdown-trigger {
     color: $primary-color !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .ant-input-group-wrapper {
+    width: 250px !important;
   }
 }

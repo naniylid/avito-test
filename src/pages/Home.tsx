@@ -4,7 +4,7 @@ import { useAppDispatch } from '../core/redux/store';
 import { useSelector } from 'react-redux';
 import { Divider, Row } from 'antd';
 import qs from 'qs';
-import '../assets/styles/Home.module.scss';
+import '../assets/styles/pages/Home.module.scss';
 import { SearchFilm, Filter, CustomPagination, Skeleton, Limit } from '../components';
 
 import { sortList } from '../components/Filter';
@@ -35,18 +35,19 @@ const Home: React.FC = () => {
     const sortType = sortBy.includes('-') ? -1 : 1;
     const sortField = sortBy.replace('-', '');
     const notNullFields = sortField;
-    const search = searchValue;
-    const query = search;
+    const search = 'search?';
+    const query = searchValue;
 
     dispatch(
       //Бизнес логика получения фильмов
       fetchMovies({
-        page: String(page),
+        limit,
+        page,
         sortType,
         query,
         sortField,
         notNullFields,
-        limit: String(limit),
+        search,
       }),
     );
     window.scrollTo(0, 0);
@@ -81,7 +82,7 @@ const Home: React.FC = () => {
     isMounted.current = true;
   }, [sortBy, searchValue, page]);
 
-  // //Если был первый рендер, то запрашиваем пиццы
+  // //Если был первый рендер, то запрашиваем фильмы
   React.useEffect(() => {
     window.scrollTo(0, 0);
     if (!isSearch.current) {
@@ -90,6 +91,7 @@ const Home: React.FC = () => {
     isSearch.current = false;
   }, [sortBy, searchValue, page]);
 
+  //Переход на страницу фильма при клике
   const movies = items.map((obj) => (
     <Link to={`/movie/${obj.id}`}>
       <CardItem {...obj} key={obj.id} />

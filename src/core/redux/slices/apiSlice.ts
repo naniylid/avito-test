@@ -10,14 +10,20 @@ import {
   FetchSliceState,
 } from '../../../@types/types';
 
-export const apiKey = 'RZZDNZ1-MHH460D-M3651KJ-QSMX0VZ';
+const API_KEY: string = import.meta.env.VITE_API_KEY as string;
 
 export const fetchMovies = createAsyncThunk<Movies[], SearchParams>(
   'movie/fetchMoviesStatus',
   async (params) => {
-    const { sortType, sortField, page, notNullFields, limit, query } = params;
+    const { sortType, sortField, page, notNullFields, limit, query, search } = params;
 
-    const url = 'https://api.kinopoisk.dev/v1.4/movie/search?year=2010-2027';
+    let url = `https://api.kinopoisk.dev/v1.4/movie`;
+
+    if (query) {
+      url += `/${search}`;
+    } else {
+      url += `?year=1980-2031`;
+    }
 
     const response = await axios.get<MovieResponse>(url, {
       params: pickBy(
@@ -33,7 +39,7 @@ export const fetchMovies = createAsyncThunk<Movies[], SearchParams>(
       ),
       headers: {
         accept: 'application/json',
-        'X-API-KEY': apiKey,
+        'X-API-KEY': API_KEY,
       },
     });
 
@@ -51,12 +57,9 @@ const apiSlice = createSlice({
   initialState,
   reducers: {
     setItems(state, action: PayloadAction<MovieResponse>) {
-      // state.items = action.payload;
       if (Array.isArray(action.payload.docs)) {
-        // Присваиваем массив фильмов из поля `docs` в состояние items
         state.items = action.payload.docs;
       } else {
-        // Если docs не является массивом (ошибка структуры данных)
         console.error('Некорректный формат данных в ответе');
       }
     },

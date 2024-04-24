@@ -13,7 +13,11 @@ const CardItem: React.FC<Movies> = ({
   ageRating,
   countries,
 }) => {
-  const formatCountries = (countries: { name: string }[]): string => {
+  const formatCountries = (countries: { name: string }[] | undefined): string => {
+    if (!countries) {
+      return ''; // Если countries === undefined, возвращаем пустую строку или другое значение по умолчанию
+    }
+
     return countries.map((country) => country.name).join(', ');
   };
 

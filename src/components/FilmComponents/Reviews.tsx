@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { List } from 'antd';
 import axios from 'axios';
-import { apiKey } from '../../core/redux/slices/apiSlice';
 import { Review } from '../../@types/types';
 import ReactPaginate from 'react-paginate';
 
 interface ReviewsProps {
   movieId: number;
 }
+
+const API_KEY: string = import.meta.env.VITE_API_KEY as string;
 
 const Reviews: React.FC<ReviewsProps> = ({ movieId }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -23,7 +24,7 @@ const Reviews: React.FC<ReviewsProps> = ({ movieId }) => {
           {
             headers: {
               accept: 'application/json',
-              'X-API-KEY': apiKey,
+              'X-API-KEY': API_KEY,
             },
           },
         );

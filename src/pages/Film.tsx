@@ -2,15 +2,18 @@ import React from 'react';
 import { Image, Rate, Descriptions, Flex, Button } from 'antd';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import styles from '../assets/styles/Film.module.scss';
+import styles from '../assets/styles/pages/Film.module.scss';
 import { Reviews, RecommendedMovies } from '../components';
 import { Movies } from '../@types/types';
 import defaultposter from '../assets/image/default.svg';
+import ReactPaginate from 'react-paginate';
 
-import { apiKey } from '../core/redux/slices/apiSlice';
+const API_KEY: string = import.meta.env.VITE_API_KEY as string;
 
 const Film: React.FC = () => {
   const [item, setItem] = React.useState<Movies>();
+  const [currentPage, setCurrentPage] = React.useState(0);
+  const itemsPerPage = 10;
 
   const formatCountries = (countries: { name: string }[]): string => {
     return countries.map((country) => country.name).join(', ');
@@ -25,7 +28,7 @@ const Film: React.FC = () => {
         const { data } = await axios.get(`https://api.kinopoisk.dev/v1.4/movie/${id}`, {
           headers: {
             accept: 'application/json',
-            'X-API-KEY': apiKey,
+            'X-API-KEY': API_KEY,
           },
         });
         setItem(data);
@@ -43,7 +46,7 @@ const Film: React.FC = () => {
       const { data } = await axios.get(`https://api.kinopoisk.dev/v1.4/movie/${id}`, {
         headers: {
           accept: 'application/json',
-          'X-API-KEY': apiKey,
+          'X-API-KEY': API_KEY,
         },
       });
       setItem(data);
@@ -59,6 +62,13 @@ const Film: React.FC = () => {
   const filteredActors = item.persons.filter((actor) => actor.profession === 'актеры');
   const actorNames = filteredActors.map((actor) => actor.name).join(', ');
 
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+  };
+
+  const offset = currentPage * itemsPerPage;
+  const currentActors = filteredActors.slice(offset, offset + itemsPerPage);
+
   return (
     <>
       <div className={styles.root}>
@@ -67,7 +77,33 @@ const Film: React.FC = () => {
 
           <Descriptions title={item.name}>
             <Descriptions.Item label='Страна'>{formatCountries(item.countries)}</Descriptions.Item>
-            <Descriptions.Item label='Актеры'>{actorNames}</Descriptions.Item>
+
+            <Descriptions.Item label='Актеры'>
+              {filteredActors.length < 11 ? (
+                actorNames
+              ) : (
+                <div>
+                  <div>
+                    {currentActors.map((actor, index) => (
+                      <span key={index}>
+                        {actor.name}
+                        {index < currentActors.length - 1 ? ', ' : ''}
+                      </span>
+                    ))}
+                  </div>
+                  <ReactPaginate
+                    previousLabel={'<'}
+                    nextLabel={'>'}
+                    pageCount={Math.ceil(filteredActors.length / itemsPerPage)}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={3}
+                    onPageChange={handlePageClick}
+                    className={styles.pagination}
+                    activeClassName={'active'}
+                  />
+                </div>
+              )}
+            </Descriptions.Item>
 
             <Descriptions.Item label='Возраст'>
               {item.ageRating ? item.ageRating : 'Нет'}

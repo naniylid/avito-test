@@ -3,10 +3,11 @@ import { Button, Card } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { apiKey } from '../core/redux/slices/apiSlice';
 import { Movies } from '../@types/types';
 import defaultposter from '../assets/image/default.svg';
-import '../assets/styles/RandomMovie.module.scss';
+import '../assets/styles/pages/RandomMovie.module.scss';
+
+const API_KEY: string = import.meta.env.VITE_API_KEY as string;
 
 const RandomFilm: React.FC = () => {
   const [item, setItem] = React.useState<Movies>();
@@ -21,7 +22,7 @@ const RandomFilm: React.FC = () => {
       const { data } = await axios.get(`https://api.kinopoisk.dev/v1.4/movie/${newId}`, {
         headers: {
           accept: 'application/json',
-          'X-API-KEY': apiKey,
+          'X-API-KEY': API_KEY,
         },
       });
       setItem(data);
@@ -36,7 +37,7 @@ const RandomFilm: React.FC = () => {
         const { data } = await axios.get(`https://api.kinopoisk.dev/v1.4/movie/${id}`, {
           headers: {
             accept: 'application/json',
-            'X-API-KEY': apiKey,
+            'X-API-KEY': API_KEY,
           },
         });
         setItem(data);

@@ -37,7 +37,7 @@ const Filter: React.FC<SortPopup> = React.memo(({ value }) => {
 
   React.useEffect(() => {
     const clickOutside = (e: MouseEvent) => {
-      if (!sortRef.current.contains(e.target as Node)) {
+      if (sortRef.current && !sortRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     };

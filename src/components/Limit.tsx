@@ -1,30 +1,27 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { InputNumber } from 'antd';
 import { debounce } from 'lodash';
-import { selectFilterSlice } from '../core/redux/slices/filterSlice';
-import { setLimit } from '../core/redux/slices/filterSlice';
-import { fetchMovies } from '../core/redux/slices/apiSlice';
 
-const Limit: React.FC = () => {
-  const dispatch = useDispatch();
-  const { limit } = useSelector(selectFilterSlice);
+interface LimitProps {
+  onChange: (value: number | null) => void;
+}
 
+const Limit: React.FC<LimitProps> = ({ onChange }) => {
   const debouncedHandleLimitChange = React.useRef(
     debounce((value: number | null) => {
-      if (typeof value === 'number') {
-        dispatch(setLimit(value));
-
-        dispatch(fetchMovies({ limit: value }));
-      }
+      onChange(value);
     }, 150),
   ).current;
 
   const handleLimitChange = (value: number | null) => {
-    debouncedHandleLimitChange(value);
+    if (typeof value === 'number') {
+      debouncedHandleLimitChange(value);
+    } else {
+      debouncedHandleLimitChange(null);
+    }
   };
 
-  return <InputNumber min={1} value={limit} onChange={handleLimitChange} />;
+  return <InputNumber min={1} defaultValue={15} onChange={handleLimitChange} />;
 };
 
 export default Limit;

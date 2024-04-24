@@ -11,7 +11,7 @@ import { sortList } from '../components/Filter';
 
 import { fetchMovies, selectApiSlice } from '../core/redux/slices/apiSlice';
 import { selectFilterSlice, setPage, setFilters } from '../core/redux/slices/filterSlice';
-
+import { setLimit } from '../core/redux/slices/filterSlice';
 import CardItem from '../components/Card/Card';
 import { SearchParams } from '../@types/types';
 
@@ -41,7 +41,7 @@ const Home: React.FC = () => {
     dispatch(
       //Бизнес логика получения фильмов
       fetchMovies({
-        limit,
+        limit: limit,
         page,
         sortType,
         query,
@@ -89,7 +89,14 @@ const Home: React.FC = () => {
       getMovies();
     }
     isSearch.current = false;
-  }, [sortBy, searchValue, page]);
+  }, [sortBy, searchValue, page, limit]);
+
+  //Количество фильмов на странице
+  const handleLimitChange = (value: number | null) => {
+    if (typeof value === 'number') {
+      dispatch(setLimit(value));
+    }
+  };
 
   //Переход на страницу фильма при клике
   const movies = items.map((obj) => (
@@ -103,7 +110,7 @@ const Home: React.FC = () => {
     <div className='main-block'>
       <SearchFilm />
       <div className='page-limit'>
-        <h4>Количество фильмов на странице</h4> <Limit />
+        <h4>Количество фильмов на странице</h4> <Limit onChange={handleLimitChange} />
       </div>
       <Divider orientation='center'>
         Все фильмы и сериалы

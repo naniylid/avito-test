@@ -59,13 +59,14 @@ const Film: React.FC = () => {
     return <>Загрузка...</>;
   }
 
+  //Выбираем только актеров
   const filteredActors = item.persons.filter((actor) => actor.profession === 'актеры');
   const actorNames = filteredActors.map((actor) => actor.name).join(', ');
 
-  const handlePageClick = (data) => {
+  const handlePageClick = (data: any) => {
     setCurrentPage(data.selected);
   };
-
+  //Для пагинации, если актеров > 10
   const offset = currentPage * itemsPerPage;
   const currentActors = filteredActors.slice(offset, offset + itemsPerPage);
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Input } from 'antd';
 import { debounce } from 'lodash';
 import { useDispatch } from 'react-redux';
+import { InputRef } from 'antd';
 
 import { setSearchValue } from '../core/redux/slices/filterSlice';
 
@@ -10,7 +11,7 @@ const { Search } = Input;
 const SearchFilm: React.FC = () => {
   const dispatch = useDispatch();
   const [value, setValue] = React.useState('');
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<InputRef>(null);
 
   const onClickClear = () => {
     dispatch(setSearchValue(''));
@@ -35,6 +36,15 @@ const SearchFilm: React.FC = () => {
     updateSearchValue(event.target.value);
   };
 
+  const renderClearButton = () => {
+    if (value) {
+      return (
+        <span className='ant-input-clear-icon' onClick={onClickClear} aria-label='Clear input' />
+      );
+    }
+    return null;
+  };
+
   return (
     <Search
       ref={inputRef}
@@ -45,7 +55,7 @@ const SearchFilm: React.FC = () => {
       onChange={onChangeInput}
       style={{ width: 300 }}
       enterButton
-      onClear={onClickClear}
+      suffix={renderClearButton()}
     />
   );
 };

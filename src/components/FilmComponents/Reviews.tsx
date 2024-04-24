@@ -5,7 +5,7 @@ import { Review } from '../../@types/types';
 import ReactPaginate from 'react-paginate';
 
 interface ReviewsProps {
-  movieId: number;
+  movieId: string | undefined;
 }
 
 const API_KEY: string = import.meta.env.VITE_API_KEY as string;

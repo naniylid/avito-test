@@ -45,3 +45,23 @@
     }
   }
 }
+
+@media (max-width: 500px) {
+  .pagination {
+    ul {
+      width: 200px;
+
+      li {
+        display: none;
+
+        &:nth-child(-n + 6),
+        &:last-child {
+          display: block;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+}

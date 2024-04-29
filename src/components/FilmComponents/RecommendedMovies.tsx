@@ -1,31 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Carousel } from 'antd';
-
-interface RecommendedMoviesProps {
-  similarMovies: {
-    id: number;
-    poster: {
-      previewUrl: string;
-    };
-  }[];
-  onMovieClick: (id: number) => void;
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { RecommendedMoviesProps } from './types';
+import { setSlidesToShow, selectFilmComponentsSlice } from './filmSlice';
 
 const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({ similarMovies, onMovieClick }) => {
-  const [slidesToShow, setSlidesToShow] = useState<number>(5);
+  const dispatch = useDispatch();
+  const { slidesToShow } = useSelector(selectFilmComponentsSlice);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1200) {
-        setSlidesToShow(5);
+        dispatch(setSlidesToShow(5));
       } else if (window.innerWidth >= 992) {
-        setSlidesToShow(4);
+        dispatch(setSlidesToShow(4));
       } else if (window.innerWidth >= 768) {
-        setSlidesToShow(3);
+        dispatch(setSlidesToShow(3));
       } else if (window.innerWidth >= 576) {
-        setSlidesToShow(2);
+        dispatch(setSlidesToShow(2));
       } else {
-        setSlidesToShow(1);
+        dispatch(setSlidesToShow(1));
       }
     };
 

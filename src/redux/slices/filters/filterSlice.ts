@@ -1,15 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import { FilterSliceState, SortPropertyEnum, SortType } from '../../../@types/types';
+import { RootState } from '../../store';
+import { FilterSliceState, SortPropertyEnum, SortType } from './FiterTypes';
 
 const initialState: FilterSliceState = {
   searchValue: '',
+  value: '',
   page: 1,
   sort: {
     name: 'Год ↑',
     sortProperty: SortPropertyEnum.YEAR_DESC,
   },
   limit: 15,
+  open: false,
 };
 
 const filterSlice = createSlice({
@@ -19,7 +21,9 @@ const filterSlice = createSlice({
     setSearchValue(state, action: PayloadAction<string>) {
       state.searchValue = action.payload;
     },
-
+    setValue(state, action: PayloadAction<string>) {
+      state.value = action.payload;
+    },
     setSort(state, action: PayloadAction<SortType>) {
       state.sort = action.payload;
     },
@@ -28,6 +32,9 @@ const filterSlice = createSlice({
     },
     setLimit(state, action: PayloadAction<number>) {
       state.limit = action.payload;
+    },
+    setOpen(state, action: PayloadAction<boolean>) {
+      state.open = action.payload;
     },
     setFilters(state, action: PayloadAction<FilterSliceState>) {
       if (Object.keys(action.payload).length) {
@@ -44,7 +51,8 @@ const filterSlice = createSlice({
   },
 });
 
-export const { setSort, setPage, setFilters, setSearchValue, setLimit } = filterSlice.actions;
+export const { setSort, setPage, setFilters, setSearchValue, setValue, setLimit, setOpen } =
+  filterSlice.actions;
 
 export const selectSort = (state: RootState) => state.filterSlice.sort;
 export const selectFilterSlice = (state: RootState) => state.filterSlice;

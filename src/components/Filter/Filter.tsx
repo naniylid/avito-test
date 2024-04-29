@@ -1,10 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { setSort } from '../core/redux/slices/filterSlice';
-import { SortType, SortPropertyEnum } from '../@types/types';
+import { setSort, setOpen, selectFilterSlice } from '../../redux/slices/filters/filterSlice';
+import { SortType, SortPropertyEnum } from '../../redux/slices/filters/FiterTypes';
 
-import '../assets/styles/components/Filter.module.scss';
+import './Filter.module.scss';
 
 type SortItem = {
   name: string;
@@ -27,18 +27,17 @@ export const sortList: SortItem[] = [
 const Filter: React.FC<SortPopup> = React.memo(({ value }) => {
   const dispatch = useDispatch();
   const sortRef = React.useRef<HTMLDivElement>(null);
-
-  const [open, setOpen] = React.useState(false);
+  const { open } = useSelector(selectFilterSlice);
 
   const onClickListOpen = (obj: SortItem) => {
     dispatch(setSort(obj));
-    setOpen(false);
+    dispatch(setOpen(false));
   };
 
   React.useEffect(() => {
     const clickOutside = (e: MouseEvent) => {
       if (sortRef.current && !sortRef.current.contains(e.target as Node)) {
-        setOpen(false);
+        dispatch(setOpen(false));
       }
     };
 

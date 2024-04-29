@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Card } from 'antd';
 import Meta from 'antd/es/card/Meta';
-import { Movies } from '../../@types/types';
+import { Movies } from '../../@types/MoviePropsTypes';
 import defaultposter from '../../assets/image/default.svg';
 
 const CardItem: React.FC<Movies> = ({
@@ -35,7 +35,6 @@ const CardItem: React.FC<Movies> = ({
     <Col className='gutter-row' span={6}>
       <Card
         hoverable
-        style={{ width: 240 }}
         cover={
           <img
             alt='film'

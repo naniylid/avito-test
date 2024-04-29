@@ -1,26 +1,28 @@
 import React from 'react';
 import { Image, Rate, Descriptions, Flex, Button } from 'antd';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import styles from '../assets/styles/pages/Film.module.scss';
-import { Reviews, RecommendedMovies } from '../components';
-import { Movies } from '../@types/types';
-import defaultposter from '../assets/image/default.svg';
 import ReactPaginate from 'react-paginate';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+
+import styles from './Film.module.scss';
+import { Reviews, RecommendedMovies } from '../../components';
+import defaultposter from '../../assets/image/default.svg';
+
+import { setItem, setCurrentPage, selectFilmPageSlice } from './filmPageSlice';
 
 const API_KEY: string = import.meta.env.VITE_API_KEY as string;
 
 const Film: React.FC = () => {
-  const [item, setItem] = React.useState<Movies>();
-  const [currentPage, setCurrentPage] = React.useState(0);
+  const dispatch = useDispatch();
+  const { item, currentPage } = useSelector(selectFilmPageSlice);
   const itemsPerPage = 10;
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const formatCountries = (countries: { name: string }[]): string => {
     return countries.map((country) => country.name).join(', ');
   };
-
-  const { id } = useParams();
-  const navigate = useNavigate();
 
   React.useEffect(() => {
     async function fetchMovie() {
@@ -31,7 +33,7 @@ const Film: React.FC = () => {
             'X-API-KEY': API_KEY,
           },
         });
-        setItem(data);
+        dispatch(setItem(data));
       } catch (error) {
         console.error('Ошибка при получении фильма:', error);
         navigate('/');
@@ -49,7 +51,7 @@ const Film: React.FC = () => {
           'X-API-KEY': API_KEY,
         },
       });
-      setItem(data);
+      dispatch(setItem(data));
     } catch (error) {
       console.error('Ошибка при загрузке деталей фильма:', error);
     }
@@ -64,7 +66,7 @@ const Film: React.FC = () => {
   const actorNames = filteredActors.map((actor) => actor.name).join(', ');
 
   const handlePageClick = (data: any) => {
-    setCurrentPage(data.selected);
+    dispatch(setCurrentPage(data.selected));
   };
   //Для пагинации, если актеров > 10
   const offset = currentPage * itemsPerPage;

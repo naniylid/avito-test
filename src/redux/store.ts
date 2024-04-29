@@ -1,12 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import apiSlice from './slices/apiSlice';
-import filterSlice from './slices/filterSlice';
+import apiSlice from './slices/api/apiSlice';
+import filterSlice from './slices/filters/filterSlice';
+import filmComponentsSlice from '../components/FilmComponents/filmSlice';
+import filmPageSlice from '../pages/Film/filmPageSlice';
+import randomSlice from '../pages/RandomFilm/randomSlice';
 
 export const store = configureStore({
   reducer: {
     apiSlice,
     filterSlice,
+    filmComponentsSlice,
+    filmPageSlice,
+    randomSlice,
   },
 });
 

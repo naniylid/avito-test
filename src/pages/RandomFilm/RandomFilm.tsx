@@ -3,14 +3,18 @@ import { Button, Card } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Movies } from '../@types/types';
-import defaultposter from '../assets/image/default.svg';
-import '../assets/styles/pages/RandomMovie.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+
+import defaultposter from '../../assets/image/default.svg';
+import './RandomMovie.module.scss';
+import { selectRandomSlice, setItem } from './randomSlice';
 
 const API_KEY: string = import.meta.env.VITE_API_KEY as string;
 
 const RandomFilm: React.FC = () => {
-  const [item, setItem] = React.useState<Movies>();
+  const dispatch = useDispatch();
+  const { item } = useSelector(selectRandomSlice);
+
   const min = 666;
   const max = 2000;
 
@@ -25,7 +29,7 @@ const RandomFilm: React.FC = () => {
           'X-API-KEY': API_KEY,
         },
       });
-      setItem(data);
+      dispatch(setItem(data));
     } catch (error) {
       console.error('Ошибка при получении нового фильма:', error);
     }
@@ -40,7 +44,7 @@ const RandomFilm: React.FC = () => {
             'X-API-KEY': API_KEY,
           },
         });
-        setItem(data);
+        dispatch(setItem(data));
       } catch (error) {
         console.error('Ошибка при получении фильма:', error);
       }

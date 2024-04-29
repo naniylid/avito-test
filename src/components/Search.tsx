@@ -1,21 +1,21 @@
 import React from 'react';
 import { Input } from 'antd';
 import { debounce } from 'lodash';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { InputRef } from 'antd';
 
-import { setSearchValue } from '../core/redux/slices/filterSlice';
+import { selectFilterSlice, setSearchValue, setValue } from '../redux/slices/filters/filterSlice';
 
 const { Search } = Input;
 
 const SearchFilm: React.FC = () => {
   const dispatch = useDispatch();
-  const [value, setValue] = React.useState('');
+  const { value } = useSelector(selectFilterSlice);
   const inputRef = React.useRef<InputRef>(null);
 
   const onClickClear = () => {
     dispatch(setSearchValue(''));
-    setValue('');
+    dispatch(setValue(''));
 
     inputRef.current?.focus();
   };
@@ -32,7 +32,7 @@ const SearchFilm: React.FC = () => {
   };
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    dispatch(setValue(event.target.value));
     updateSearchValue(event.target.value);
   };
 

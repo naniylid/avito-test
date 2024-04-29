@@ -1,14 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { identity, pickBy } from 'lodash';
-import { RootState } from '../store';
-import {
-  Status,
-  Movies,
-  MovieResponse,
-  SearchParams,
-  FetchSliceState,
-} from '../../../@types/types';
+import { RootState } from '../../store';
+import { Status, SearchParams, FetchSliceState } from './ApiParamsTypes';
+import { Movies, MovieResponse } from '../../../@types/MoviePropsTypes';
 
 const API_KEY: string = import.meta.env.VITE_API_KEY as string;
 

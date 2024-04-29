@@ -1,19 +1,22 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../core/redux/store';
 import { useSelector } from 'react-redux';
 import { Divider, Row } from 'antd';
 import qs from 'qs';
-import '../assets/styles/pages/Home.module.scss';
-import { SearchFilm, Filter, CustomPagination, Skeleton, Limit } from '../components';
 
-import { sortList } from '../components/Filter';
+import './Home.module.scss';
+import { SearchFilm, Filter, CustomPagination, Skeleton, Limit, CardItem } from '../../components';
+import { sortList } from '../../components/Filter/Filter';
 
-import { fetchMovies, selectApiSlice } from '../core/redux/slices/apiSlice';
-import { selectFilterSlice, setPage, setFilters } from '../core/redux/slices/filterSlice';
-import { setLimit } from '../core/redux/slices/filterSlice';
-import CardItem from '../components/Card/Card';
-import { SearchParams } from '../@types/types';
+import { useAppDispatch } from '../../redux/store';
+import { fetchMovies, selectApiSlice } from '../../redux/slices/api/apiSlice';
+import {
+  selectFilterSlice,
+  setPage,
+  setFilters,
+  setLimit,
+} from '../../redux/slices/filters/filterSlice';
+import { SearchParams } from '../../redux/slices/api/ApiParamsTypes';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -99,7 +102,7 @@ const Home: React.FC = () => {
   };
 
   //Переход на страницу фильма при клике
-  const movies = items.map((obj) => (
+  const movies = items.map((obj: any) => (
     <Link to={`/movie/${obj.id}`}>
       <CardItem {...obj} key={obj.id} />
     </Link>

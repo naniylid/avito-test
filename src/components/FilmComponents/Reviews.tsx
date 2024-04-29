@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { List } from 'antd';
 import axios from 'axios';
-import { Review } from '../../@types/types';
 import ReactPaginate from 'react-paginate';
-
-interface ReviewsProps {
-  movieId: string | undefined;
-}
+import { setReviews, setCurrentPage, selectFilmComponentsSlice } from './filmSlice';
+import { ReviewsProps } from './types';
 
 const API_KEY: string = import.meta.env.VITE_API_KEY as string;
 
 const Reviews: React.FC<ReviewsProps> = ({ movieId }) => {
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-
+  const dispatch = useDispatch();
+  const { reviews, currentPage } = useSelector(selectFilmComponentsSlice);
   const reviewsPerPage = 1; // Количество отзывов на одной странице
 
   useEffect(() => {
@@ -28,7 +25,7 @@ const Reviews: React.FC<ReviewsProps> = ({ movieId }) => {
             },
           },
         );
-        setReviews(data.docs);
+        dispatch(setReviews(data.docs));
       } catch (error) {
         console.error('Ошибка при получении отзывов:', error);
         alert('Ошибка при получении отзывов!');
@@ -41,7 +38,7 @@ const Reviews: React.FC<ReviewsProps> = ({ movieId }) => {
   }, [movieId]);
 
   const handlePageChange = (selectedPage: number) => {
-    setCurrentPage(selectedPage);
+    dispatch(setCurrentPage(selectedPage));
   };
 
   const pageCount = Math.ceil(reviews.length / reviewsPerPage);

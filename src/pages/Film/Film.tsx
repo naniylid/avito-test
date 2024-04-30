@@ -1,8 +1,7 @@
 import React from 'react';
 import { Image, Rate, Descriptions, Flex, Button } from 'antd';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './Film.module.scss';
@@ -10,47 +9,31 @@ import { Reviews, RecommendedMovies } from '../../components';
 import defaultposter from '../../assets/image/default.svg';
 
 import { setItem, setCurrentPage, selectFilmPageSlice } from './filmPageSlice';
-
-const API_KEY: string = import.meta.env.VITE_API_KEY as string;
+import { fetchMovieById } from '../fetchMovie';
 
 const Film: React.FC = () => {
   const dispatch = useDispatch();
   const { item, currentPage } = useSelector(selectFilmPageSlice);
   const itemsPerPage = 10;
   const { id } = useParams();
-  const navigate = useNavigate();
-
-  const formatCountries = (countries: { name: string }[]): string => {
-    return countries.map((country) => country.name).join(', ');
-  };
 
   React.useEffect(() => {
     async function fetchMovie() {
       try {
-        const { data } = await axios.get(`https://api.kinopoisk.dev/v1.4/movie/${id}`, {
-          headers: {
-            accept: 'application/json',
-            'X-API-KEY': API_KEY,
-          },
-        });
+        const data = await fetchMovieById(id);
         dispatch(setItem(data));
       } catch (error) {
         console.error('Ошибка при получении фильма:', error);
-        navigate('/');
       }
     }
 
     fetchMovie();
   }, []);
 
-  const handleMovieClick = async (id: number) => {
+  //Переход на фильм из карусели
+  const handleMovieClick = async (id: string) => {
     try {
-      const { data } = await axios.get(`https://api.kinopoisk.dev/v1.4/movie/${id}`, {
-        headers: {
-          accept: 'application/json',
-          'X-API-KEY': API_KEY,
-        },
-      });
+      const data = await fetchMovieById(id);
       dispatch(setItem(data));
     } catch (error) {
       console.error('Ошибка при загрузке деталей фильма:', error);
@@ -68,9 +51,15 @@ const Film: React.FC = () => {
   const handlePageClick = (data: any) => {
     dispatch(setCurrentPage(data.selected));
   };
+
   //Для пагинации, если актеров > 10
   const offset = currentPage * itemsPerPage;
   const currentActors = filteredActors.slice(offset, offset + itemsPerPage);
+
+  //Страны
+  const formatCountries = (countries: { name: string }[]): string => {
+    return countries.map((country) => country.name).join(', ');
+  };
 
   return (
     <>
@@ -82,7 +71,7 @@ const Film: React.FC = () => {
             <Descriptions.Item label='Страна'>{formatCountries(item.countries)}</Descriptions.Item>
 
             <Descriptions.Item label='Актеры'>
-              {filteredActors.length < 11 ? (
+              {filteredActors.length <= itemsPerPage ? (
                 actorNames
               ) : (
                 <div>

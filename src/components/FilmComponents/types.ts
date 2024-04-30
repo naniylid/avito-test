@@ -8,12 +8,12 @@ export type FilmStates = {
 
 export interface RecommendedMoviesProps {
   similarMovies: {
-    id: number;
+    id: string;
     poster: {
       previewUrl: string;
     };
   }[];
-  onMovieClick: (id: number) => void;
+  onMovieClick: (id: string) => void;
 }
 
 export interface ReviewsProps {

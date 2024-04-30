@@ -28,7 +28,6 @@ const Reviews: React.FC<ReviewsProps> = ({ movieId }) => {
         dispatch(setReviews(data.docs));
       } catch (error) {
         console.error('Ошибка при получении отзывов:', error);
-        alert('Ошибка при получении отзывов!');
       }
     }
 

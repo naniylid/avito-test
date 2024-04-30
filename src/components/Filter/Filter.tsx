@@ -50,7 +50,7 @@ const Filter: React.FC<SortPopup> = React.memo(({ value }) => {
     <div ref={sortRef} className='sort'>
       <div className='sort__label'>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpen(!open)}>{value.name}</span>
+        <span onClick={() => dispatch(setOpen(!open))}>{value.name}</span>
       </div>
       {open && (
         <div className='sort__popup'>

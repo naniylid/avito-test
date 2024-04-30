@@ -1,6 +1,6 @@
 export type Movies = {
-  id: number;
-  movieId: number;
+  id: string;
+  movieId: string;
   name: string;
   alternativeName?: string;
   year: number;
@@ -24,7 +24,7 @@ export type Movies = {
     id?: number;
   }[];
   similarMovies?: {
-    id: number;
+    id: string;
     poster: {
       previewUrl: string;
     };
@@ -36,7 +36,7 @@ export type MovieResponse = {
 };
 
 export type Review = {
-  movieId: number;
+  movieId: string;
   author: string;
   title: string;
   review: string;

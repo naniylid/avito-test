@@ -1,15 +1,13 @@
 import React from 'react';
 import { Button, Card } from 'antd';
 import Meta from 'antd/es/card/Meta';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import defaultposter from '../../assets/image/default.svg';
 import './RandomMovie.module.scss';
 import { selectRandomSlice, setItem } from './randomSlice';
-
-const API_KEY: string = import.meta.env.VITE_API_KEY as string;
+import { fetchMovieById } from '../fetchMovie';
 
 const RandomFilm: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,17 +16,12 @@ const RandomFilm: React.FC = () => {
   const min = 666;
   const max = 2000;
 
-  const id = Math.floor(Math.random() * (max - min + 1)) + min;
+  const id = '' + (Math.floor(Math.random() * (max - min + 1)) + min);
 
   const getRandomMovie = async () => {
-    const newId = Math.floor(Math.random() * (max - min + 1)) + min;
+    const newId = '' + (Math.floor(Math.random() * (max - min + 1)) + min);
     try {
-      const { data } = await axios.get(`https://api.kinopoisk.dev/v1.4/movie/${newId}`, {
-        headers: {
-          accept: 'application/json',
-          'X-API-KEY': API_KEY,
-        },
-      });
+      const data = await fetchMovieById(newId);
       dispatch(setItem(data));
     } catch (error) {
       console.error('Ошибка при получении нового фильма:', error);
@@ -36,31 +29,28 @@ const RandomFilm: React.FC = () => {
   };
 
   React.useEffect(() => {
-    async function fetchMovie() {
+    async function fetchRandomMovie() {
       try {
-        const { data } = await axios.get(`https://api.kinopoisk.dev/v1.4/movie/${id}`, {
-          headers: {
-            accept: 'application/json',
-            'X-API-KEY': API_KEY,
-          },
-        });
+        const data = await fetchMovieById(id);
         dispatch(setItem(data));
       } catch (error) {
         console.error('Ошибка при получении фильма:', error);
       }
     }
 
-    fetchMovie();
+    fetchRandomMovie();
   }, []);
 
   if (!item) {
     return <>Загрузка...</>;
   }
 
+  //Получение стран
   const formatCountries = (countries: { name: string }[]): string => {
     return countries.map((country) => country.name).join(', ');
   };
 
+  //Получание жанров
   const getFirstTwoGenres = (genres: { name: string }[]): string => {
     if (genres.length >= 2) {
       return `${genres[0].name}, ${genres[1].name}`;
@@ -71,6 +61,10 @@ const RandomFilm: React.FC = () => {
     }
   };
 
+  // Обработка пустых фото
+  const posterUrl =
+    item.poster && item.poster.url && item.poster.url !== 'null' ? item.poster.url : defaultposter;
+
   return (
     <div className='random-movie'>
       <h1>Выбрать случайный фильм </h1>
@@ -79,16 +73,7 @@ const RandomFilm: React.FC = () => {
           className='random-movie__card'
           hoverable
           style={{ width: 250 }}
-          cover={
-            <img
-              alt='film'
-              src={
-                item.poster && item.poster.url && item.poster.url !== 'null'
-                  ? item.poster.url
-                  : defaultposter
-              }
-            />
-          }
+          cover={<img alt='film' src={posterUrl} />}
         >
           <Meta title={item.name ? item.name : item.alternativeName} description='' />
           <div>

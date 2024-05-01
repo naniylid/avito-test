@@ -9,7 +9,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path='/' element={<MainLayout />}>
-        <Route path='' element={<Home />} />
+        <Route index element={<Home />} />
         <Route path='/movie/:id' element={<Film />} />
         <Route path='/random' element={<RandomFilm />} />
         <Route path='*' element={<NotFound />} />

@@ -59,6 +59,7 @@ const Filter: React.FC<SortPopup> = React.memo(({ value }) => {
               <li
                 key={i}
                 onClick={() => onClickListOpen(obj)}
+                id={`sort-item-${obj.sortProperty}`}
                 className={value.sortProperty === obj.sortProperty ? 'active' : ''}
               >
                 {obj.name}

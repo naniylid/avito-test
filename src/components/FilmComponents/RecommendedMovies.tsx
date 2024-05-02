@@ -41,7 +41,7 @@ const RecommendedMovies: React.FC<RecommendedMoviesProps> = ({ similarMovies, on
             <div key={movie.id} onClick={() => onMovieClick(movie.id)}>
               <img
                 src={movie.poster.previewUrl}
-                alt='Фильм'
+                alt={`Фильм ${movie.id}`}
                 style={{ width: '100%', height: '400px', objectFit: 'cover', cursor: 'pointer' }}
               />
             </div>
